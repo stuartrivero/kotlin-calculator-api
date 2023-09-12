@@ -1,5 +1,6 @@
 package com.calculator.controller
 
+import com.calculator.services.CalculatorService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -11,12 +12,14 @@ import java.math.BigDecimal
 
 @RestController
 @RequestMapping("/calculator")
-class CalculatorController {
+class CalculatorController(private val calculatorService: CalculatorService) {
+
 
     @PostMapping
     @RequestMapping("/add")
     fun add(@RequestBody calculation: AddCalculation): ResponseEntity<String> {
-        return ResponseEntity("1 + 2 = 3", HttpStatus.OK)
+        val result = calculatorService.add(calculation.operand1, calculation.operand2)
+        return ResponseEntity("${calculation.operand1} + ${calculation.operand2} = $result", HttpStatus.OK)
     }
 
     data class AddCalculation(val operand1: BigDecimal, val operand2: BigDecimal)
