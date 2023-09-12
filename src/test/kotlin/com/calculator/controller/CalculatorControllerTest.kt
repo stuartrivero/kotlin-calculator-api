@@ -14,10 +14,7 @@ class CalculatorControllerTest(@Autowired val mockMvc: MockMvc) {
 
     @Test
     fun `Two values can be added`() {
-        val paramsJson = """{
-            | "operand1": "1",
-            | "operand2": "2"
-            |}""".trimMargin()
+        val paramsJson = calculationBody("1", "2")
         mockMvc.perform(
             post("/calculator/add")
                 .content(paramsJson)
@@ -30,10 +27,7 @@ class CalculatorControllerTest(@Autowired val mockMvc: MockMvc) {
     @Test
     fun `Bad request when first operand is not a number`() {
 
-        val paramsJson = """{
-            | "operand1": "Foo",
-            | "operand2": "2"
-            |}""".trimMargin()
+        val paramsJson = calculationBody("Foo", "2")
         mockMvc.perform(
             post("/calculator/add")
                 .content(paramsJson)
@@ -45,10 +39,7 @@ class CalculatorControllerTest(@Autowired val mockMvc: MockMvc) {
     @Test
     fun `Bad request when second operand is not a number`() {
 
-        val paramsJson = """{
-            | "operand1": "1",
-            | "operand2": "Bar"
-            |}""".trimMargin()
+        val paramsJson = calculationBody("1", "Bar")
         mockMvc.perform(
             post("/calculator/add")
                 .content(paramsJson)
@@ -56,4 +47,9 @@ class CalculatorControllerTest(@Autowired val mockMvc: MockMvc) {
         )
             .andExpect(status().isBadRequest)
     }
+
+    private fun calculationBody(operand1: String, operand2: String) = """{
+                | "operand1": "$operand1",
+                | "operand2": "$operand2"
+                |}""".trimMargin()
 }
