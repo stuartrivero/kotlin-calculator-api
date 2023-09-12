@@ -20,3 +20,9 @@ cache and return the response. Update the last accessed timestamp in the cache.
 API’s exposed by the microservice.
 - Provide OpenAPI Swagger documentation or any other REST API documentation for
 at least one API.
+
+
+
+# References
+https://spring.io/guides/tutorials/spring-boot-kotlin/
+https://www.baeldung.com/kotlin/spring-boot-testing
