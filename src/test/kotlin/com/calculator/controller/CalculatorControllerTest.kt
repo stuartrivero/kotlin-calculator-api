@@ -13,16 +13,32 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 class CalculatorControllerTest(@Autowired val mockMvc: MockMvc) {
 
     @Test
-    fun `Two values can be added` () {
+    fun `Two values can be added`() {
         val paramsJson = """{
             | "operand1": "1",
             | "operand2": "2"
             |}""".trimMargin()
-        mockMvc.perform(post("/calculator/add")
-            .content(paramsJson)
-            .contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(
+            post("/calculator/add")
+                .content(paramsJson)
+                .contentType(MediaType.APPLICATION_JSON)
         )
-        .andExpect(status().isOk())
-        .andExpect(content().string("1 + 2 = 3"))
+            .andExpect(status().isOk())
+            .andExpect(content().string("1 + 2 = 3"))
+    }
+
+    @Test
+    fun `Bad request when first operand is not a number`() {
+
+        val paramsJson = """{
+            | "operand1": "Foo",
+            | "operand2": "2"
+            |}""".trimMargin()
+        mockMvc.perform(
+            post("/calculator/add")
+                .content(paramsJson)
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isBadRequest)
     }
 }
