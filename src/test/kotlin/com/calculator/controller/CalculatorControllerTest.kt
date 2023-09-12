@@ -41,4 +41,19 @@ class CalculatorControllerTest(@Autowired val mockMvc: MockMvc) {
         )
             .andExpect(status().isBadRequest)
     }
+
+    @Test
+    fun `Bad request when second operand is not a number`() {
+
+        val paramsJson = """{
+            | "operand1": "1",
+            | "operand2": "Bar"
+            |}""".trimMargin()
+        mockMvc.perform(
+            post("/calculator/add")
+                .content(paramsJson)
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isBadRequest)
+    }
 }
